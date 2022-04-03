@@ -14,20 +14,22 @@
 
 <script>
 import useLogout from "../composibles/useLogout";
-import getUser from "../composibles/getUser";
+// import getUser from "../composibles/getUser";
+import { useRouter } from "vue-router";
 export default {
   setup(props, context) {
+    const router = useRouter();
     const { error, logout, isPending } = useLogout();
-    const user = getUser();
+    // const user = getUser();
     const handleLogout = async () => {
       console.log("now logging out");
       await logout();
       if (!error.value) {
         console.log("successfully logged out");
+        router.push({ name: "Login" });
       }
-      //   context.emit("logout");
     };
-    return { handleLogout, error, user, isPending };
+    return { handleLogout, error, isPending };
   },
 };
 </script>

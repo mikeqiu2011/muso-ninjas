@@ -4,7 +4,8 @@
     <input type="email" placeholder="email" required v-model="email" />
     <input type="password" placeholder="password" required v-model="password" />
     <div class="error">{{ error }}</div>
-    <button>Log in</button>
+    <button v-if="!isPending">Log in</button>
+    <button v-if="isPending" disabled>Loading</button>
   </form>
 </template>
 
@@ -18,7 +19,7 @@ export default {
     const email = ref("");
     const password = ref("");
     const router = useRouter();
-    const { error, login } = useLogin();
+    const { error, login, isPending } = useLogin();
 
     const handleSubmit = async () => {
       const res = await login(email.value, password.value);
@@ -27,10 +28,13 @@ export default {
         router.push({ name: "Home" });
       }
     };
-    return { email, password, handleSubmit, error };
+    return { email, password, handleSubmit, error, isPending };
   },
 };
 </script>
 
 <style>
+.pending {
+  background-color: blue;
+}
 </style>

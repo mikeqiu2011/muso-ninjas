@@ -18,6 +18,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import useCollection from "../../composibles/useCollection";
+import useStorage from "../../composibles/useStorage";
 
 export default {
   setup() {
@@ -26,14 +27,18 @@ export default {
     const file = ref(null);
     const fileError = ref("");
 
+    const { url, filePath, uploadImage } = useStorage();
     const { error, addDoc, isPending } = useCollection();
 
     const handleSubmit = async () => {
       if (file.value) {
+        await uploadImage(file.value);
+
         let playlist = {
           title: title,
           description: description,
-          File: file,
+          url: url,
+          filePath: filePath,
         };
         console.log(playlist);
         // await addDoc(playlist);

@@ -6,4 +6,4 @@
     firebase init
 
 ## install firebase npm package
-    npm i firebase
+    npm i firebase@8.10

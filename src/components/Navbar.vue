@@ -4,9 +4,13 @@
       <img src="@/assets/ninja.png" />
       <h1><router-link :to="{ name: 'Home' }">Muso Ninjas</router-link></h1>
       <div class="links">
-        <button @click="handleLogout">Logout</button>
-        <router-link class="btn" :to="{ name: 'Login' }">Login</router-link>
-        <router-link class="btn" :to="{ name: 'Signup' }">Sign up</router-link>
+        <button v-if="user" @click="handleLogout">Logout</button>
+        <router-link v-if="!user" class="btn" :to="{ name: 'Login' }"
+          >Login</router-link
+        >
+        <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
+          >Sign up</router-link
+        >
       </div>
     </nav>
   </div>
@@ -14,13 +18,13 @@
 
 <script>
 import useLogout from "../composibles/useLogout";
-// import getUser from "../composibles/getUser";
+import getUser from "../composibles/getUser";
 import { useRouter } from "vue-router";
 export default {
   setup(props, context) {
     const router = useRouter();
     const { error, logout, isPending } = useLogout();
-    // const user = getUser();
+    const { user } = getUser(); // must use the { } !!!
     const handleLogout = async () => {
       console.log("now logging out");
       await logout();
@@ -29,7 +33,7 @@ export default {
         router.push({ name: "Login" });
       }
     };
-    return { handleLogout, error, isPending };
+    return { handleLogout, error, user, isPending };
   },
 };
 </script>

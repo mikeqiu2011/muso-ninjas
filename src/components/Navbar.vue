@@ -4,13 +4,15 @@
       <img src="@/assets/ninja.png" />
       <h1><router-link :to="{ name: 'Home' }">Muso Ninjas</router-link></h1>
       <div class="links">
-        <button v-if="user" @click="handleLogout">Logout</button>
-        <router-link v-if="!user" class="btn" :to="{ name: 'Login' }"
-          >Login</router-link
-        >
-        <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
-          >Sign up</router-link
-        >
+        <div v-if="user">
+          <button @click="handleLogout">Logout</button>
+        </div>
+        <div v-else>
+          <router-link class="btn" :to="{ name: 'Login' }">Login</router-link>
+          <router-link class="btn" :to="{ name: 'Signup' }"
+            >Sign up</router-link
+          >
+        </div>
       </div>
     </nav>
   </div>

@@ -11,14 +11,17 @@
     <input type="file" @change="handleChange" ref="file" />
     <div class="error">{{ error }}</div>
     <div class="error">{{ fileError }}</div>
-    <button>create play list</button>
+    <button v-if="!isPending">create</button>
+    <button v-else>saving</button>
   </form>
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
 import useCollection from "../../composibles/useCollection";
+import getUser from "../../composibles/getUser";
 import useStorage from "../../composibles/useStorage";
+import { timestamp } from "../../firebase/config";
 
 export default {
   setup() {
@@ -26,25 +29,33 @@ export default {
     const description = ref("");
     const file = ref(null);
     const fileError = ref("");
+    const { user } = getUser();
+    const isPending = ref(false);
 
     const { url, filePath, uploadImage } = useStorage();
-    const { error, addDoc, isPending } = useCollection();
+    const { error, addDoc } = useCollection("playlists");
 
     const handleSubmit = async () => {
       if (file.value) {
+        isPending.value = true;
         await uploadImage(file.value);
 
         let playlist = {
-          title: title,
-          description: description,
-          url: url,
-          filePath: filePath,
+          title: title.value,
+          description: description.value,
+          coverUrl: url.value,
+          filePath: filePath.value, // we may need this to delete the file in future
+          userId: user.value.uid,
+          userName: user.value.displayName,
+          songs: [], // to be added in future
+          createdAt: timestamp(),
         };
         console.log(playlist);
-        // await addDoc(playlist);
-        // if (!error.value) {
-        //   console.log("playlist create");
-        // }
+        await addDoc(playlist);
+        isPending.value = false;
+        if (!error.value) {
+          console.log("playlist create");
+        }
       }
     };
 
@@ -67,10 +78,10 @@ export default {
       title,
       description,
       error,
-      isPending,
       handleSubmit,
       handleChange,
       fileError,
+      isPending,
     };
   },
 };

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { projectStorage } from "../firebase/config";
-// import getUser from "./getUser"
+import getUser from "./getUser"
 
 const { user } = getUser()
 

@@ -13,3 +13,6 @@
 
 ## deploy storage rules
     firebase deploy --only storage:rules
+
+## create firestore index
+    https://console.firebase.google.com/project/muso-ninjas-409e9/firestore/indexes

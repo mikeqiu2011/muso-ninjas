@@ -22,6 +22,7 @@ import useCollection from "../../composibles/useCollection";
 import getUser from "../../composibles/getUser";
 import useStorage from "../../composibles/useStorage";
 import { timestamp } from "../../firebase/config";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
@@ -31,6 +32,7 @@ export default {
     const fileError = ref("");
     const { user } = getUser();
     const isPending = ref(false);
+    const router = useRouter();
 
     const { url, filePath, uploadImage } = useStorage();
     const { error, addDoc } = useCollection("playlists");
@@ -51,10 +53,11 @@ export default {
           createdAt: timestamp(),
         };
         console.log(playlist);
-        await addDoc(playlist);
+        res = await addDoc(playlist);
         isPending.value = false;
         if (!error.value) {
           console.log("playlist create");
+          router.push({ name: "PlaylistDetails", params: { id: res.id } });
         }
       }
     };

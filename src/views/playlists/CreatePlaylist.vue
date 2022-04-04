@@ -53,7 +53,7 @@ export default {
           createdAt: timestamp(),
         };
         console.log(playlist);
-        res = await addDoc(playlist);
+        const res = await addDoc(playlist);
         isPending.value = false;
         if (!error.value) {
           console.log("playlist create");

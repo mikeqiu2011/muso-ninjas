@@ -5,6 +5,9 @@
       <h1><router-link :to="{ name: 'Home' }">Muso Ninjas</router-link></h1>
       <div class="links">
         <div v-if="user">
+          <router-link :to="{ name: 'UserPlaylist' }" class="btn"
+            >My playlist</router-link
+          >
           <router-link :to="{ name: 'CreatePlaylist' }" class="btn"
             >Create playlist</router-link
           >

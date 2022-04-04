@@ -32,7 +32,7 @@ export default {
       const res = await signup(email.value, password.value, displayName.value);
       if (!error.value) {
         // context.emit("login");
-        router.push({ name: "Home" });
+        router.push({ name: "UserPlaylist" });
       }
     };
     return { email, password, handleSubmit, error, isPending, displayName };

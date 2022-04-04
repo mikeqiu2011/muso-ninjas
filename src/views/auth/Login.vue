@@ -25,7 +25,7 @@ export default {
       const res = await login(email.value, password.value);
       if (!error.value) {
         // context.emit("login");
-        router.push({ name: "Home" });
+        router.push({ name: "UserPlaylist" });
       }
     };
     return { email, password, handleSubmit, error, isPending };

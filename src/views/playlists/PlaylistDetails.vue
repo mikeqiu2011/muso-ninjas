@@ -1,21 +1,20 @@
 <template>
-  <h1>playlist details</h1>
-  {{ id }}
+  <div class="error">{{ error }}</div>
+  <div v-if="document">
+    {{ document.title }}
+  </div>
 </template>
 
 <script>
-import getCollection from "../../composibles/getCollection";
+import getDocument from "../../composibles/getDocument";
 export default {
   props: ["id"],
-  // setup(props) {
-  //   const { error, documents } = getCollection("playlists");
 
-  //   const playlist = documents.filter((playlist) => {
-  //     return playlist.id == props.id;
-  //   });
+  setup(props) {
+    const { error, document } = getDocument("playlists", props.id);
 
-  //   return { error, playlist };
-  //   },
+    return { error, document };
+  },
 };
 </script>
 

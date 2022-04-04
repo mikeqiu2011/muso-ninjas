@@ -10,3 +10,6 @@
 
 ## deploy firestoer rules
     firebase deploy --only firestore:rules
+
+## deploy storage rules
+    firebase deploy --only storage:rules

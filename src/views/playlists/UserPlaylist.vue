@@ -5,6 +5,9 @@
     <div v-if="playlists">
       <ListView :playlists="playlists" />
     </div>
+    <router-link class="btn" :to="{ name: 'CreatePlaylist' }"
+      >Create new playlist</router-link
+    >
   </div>
 </template>
 

@@ -14,6 +14,15 @@
     <!-- song list info -->
     <div class="song-list">
       <p>song list here</p>
+      <div v-if="playlist.songs.length">
+        <div v-for="song in playlist.songs" :key="song">
+          {{ song }}
+        </div>
+      </div>
+      <div v-if="isOwner">
+        <AddSong :playlist="playlist" />
+      </div>
+      <!-- <button @click="showAddSong = true">add song</button> -->
     </div>
     <div v-if="isOwner">
       <button @click="handleDelete">Delete playlist</button>
@@ -25,12 +34,14 @@
 import { ref } from "@vue/reactivity";
 import getDocument from "../../composibles/getDocument";
 import useStorage from "../../composibles/useStorage";
-import deleteDocument from "../../composibles/deleteDocument";
+import { deleteDocument } from "../../composibles/document";
 import getUser from "../../composibles/getUser";
 import { computed } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
+import AddSong from "../../components/AddSong.vue";
 export default {
   props: ["id"],
+  components: { AddSong },
 
   setup(props) {
     // grab the return value and rename it to playlist
@@ -38,6 +49,14 @@ export default {
     const { user } = getUser();
     const router = useRouter();
     const { deleteImage } = useStorage();
+    const showAddSong = ref(false);
+    const song = ref(null);
+
+    const handleAddSong = async () => {
+      playlist.value.songs.push(song.value);
+      await updateDocument("playlists", playlist.value);
+      showAddSong.value = false;
+    };
 
     const isOwner = computed(() => {
       console.log(user.value.uid, playlist.value.userId);
@@ -53,7 +72,14 @@ export default {
       router.push({ name: "Home" });
     };
 
-    return { error, playlist, isOwner, handleDelete };
+    return {
+      error,
+      playlist,
+      isOwner,
+      handleDelete,
+      showAddSong,
+      handleAddSong,
+    };
   },
 };
 </script>

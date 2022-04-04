@@ -21,4 +21,24 @@ const deleteDocument = async (collection, id) => {
   return { error, isPending }
 }
 
-export default deleteDocument
+const updateDocument = async (collection, id, updates) => {
+  const error = ref(null)
+  const isPending = ref(false)
+
+  try {
+    isPending.value = true
+    const documentRef = projectFirestore.collection(collection).doc(id)
+    await documentRef.update(updates)
+    isPending.value = false
+  } catch (err) {
+    console.log(err.message)
+    error.value = err.message
+    isPending.value = false
+  }
+
+  return { error, isPending }
+
+
+}
+
+export { deleteDocument, updateDocument } 

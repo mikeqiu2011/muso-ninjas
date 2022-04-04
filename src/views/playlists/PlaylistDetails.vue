@@ -24,8 +24,10 @@
 <script>
 import { ref } from "@vue/reactivity";
 import getDocument from "../../composibles/getDocument";
+import deleteDocument from "../../composibles/deleteDocument";
 import getUser from "../../composibles/getUser";
 import { computed } from "@vue/runtime-core";
+import { useRouter } from "vue-router";
 export default {
   props: ["id"],
 
@@ -33,7 +35,7 @@ export default {
     // grab the return value and rename it to playlist
     const { error, document: playlist } = getDocument("playlists", props.id);
     const { user } = getUser();
-    // const isOwner = ref();
+    const router = useRouter();
 
     const isOwner = computed(() => {
       console.log(user.value.uid, playlist.value.userId);
@@ -42,9 +44,12 @@ export default {
       );
     });
 
-    const handleDelete = () => {};
+    const handleDelete = () => {
+      deleteDocument("playlists", props.id);
+      router.push({ name: "Home" });
+    };
 
-    return { error, playlist, isOwner };
+    return { error, playlist, isOwner, handleDelete };
   },
 };
 </script>

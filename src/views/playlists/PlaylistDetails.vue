@@ -65,8 +65,8 @@ export default {
       const songs = playlist.value.songs.filter((song) => {
         return song.id != id;
       });
-      playlist.value.songs = songs;
-      await updateDoc({ songs: songs }); // need to pass an obj
+      // playlist.value.songs = songs; // no need to update local one, as it syncs with firestore auto
+      await updateDoc({ songs }); // need to pass an obj, if key and value are the same, we just pass the key
     };
 
     const handleAddSong = async () => {

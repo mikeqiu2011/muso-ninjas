@@ -1,50 +1,38 @@
 <template>
-  <button v-if="!showAddSong" @click="showAddSong = !showAddSong">
-    Add Songs
-  </button>
-  <div v-else>
-    <form @submit.prevent="handleAddSong">
+  <div class="add-song">
+    <button v-if="!showForm" @click="showForm = true">Add Songs</button>
+    <form v-if="showForm" @submit.prevent="handleSubmit">
       <h4>Add a New Song</h4>
-      <input type="text" required placeholder="Song title" v-model="title" />
-      <input type="text" required placeholder="Song artist" v-model="artist" />
-      <button>add</button>
+      <input type="text" placeholder="Song title" required v-model="title" />
+      <input type="text" placeholder="Artist" required v-model="artist" />
+      <button>Add</button>
     </form>
   </div>
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
-import { updateDocument } from "../composibles/document";
+import { ref } from "vue";
+import useDocument from "../composibles/useDocument";
 export default {
   props: ["playlist"],
-
   setup(props) {
     const title = ref("");
     const artist = ref("");
-    const showAddSong = ref(false);
-
-    const handleAddSong = async () => {
-      // showAddSong.value = !showAddSong.value;
-
+    const showForm = ref(false);
+    const { updateDoc } = useDocument("playlists", props.playlist.id);
+    const handleSubmit = async () => {
       const newSong = {
-        title: title,
-        artist: artist,
-        id: Math.floor(Math.random() * 1000000), // mimic a random id generator
+        title: title.value,
+        artist: artist.value,
+        id: Math.floor(Math.random() * 1000000),
       };
-      console.log(newSong);
-
-      let songs = [...props.playlist.songs, newSong];
-      console.log(songs);
-
-      await updateDocument("playlists", props.playlist.id, {
-        songs: songs,
+      const res = await updateDoc({
+        songs: [...props.playlist.songs, newSong],
       });
-      console.log("song added");
       title.value = "";
       artist.value = "";
     };
-
-    return { title, artist, showAddSong, handleAddSong };
+    return { title, artist, showForm, handleSubmit };
   },
 };
 </script>

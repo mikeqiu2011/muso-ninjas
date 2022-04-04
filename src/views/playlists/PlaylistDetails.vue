@@ -15,19 +15,36 @@
     <div class="song-list">
       <p>song list here</p>
     </div>
+    <div v-if="isOwner">
+      <button @click="handleDelete">Delete playlist</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref } from "@vue/reactivity";
 import getDocument from "../../composibles/getDocument";
+import getUser from "../../composibles/getUser";
+import { computed } from "@vue/runtime-core";
 export default {
   props: ["id"],
 
   setup(props) {
     // grab the return value and rename it to playlist
     const { error, document: playlist } = getDocument("playlists", props.id);
+    const { user } = getUser();
+    // const isOwner = ref();
 
-    return { error, playlist };
+    const isOwner = computed(() => {
+      console.log(user.value.uid, playlist.value.userId);
+      return (
+        playlist.value && user.value && user.value.uid == playlist.value.userId
+      );
+    });
+
+    const handleDelete = () => {};
+
+    return { error, playlist, isOwner };
   },
 };
 </script>

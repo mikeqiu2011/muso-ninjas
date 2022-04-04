@@ -13,12 +13,16 @@
 
     <!-- song list info -->
     <div class="song-list">
-      <p>song list here</p>
       <div v-if="playlist.songs.length">
-        <div v-for="song in playlist.songs" :key="song">
-          {{ song }}
+        <div v-for="song in playlist.songs" :key="song" class="single-song">
+          <div class="details">
+            <h3>{{ song.title }}</h3>
+            <p>made by {{ song.artist }}</p>
+          </div>
+          <button v-if="isOwner">delete song</button>
         </div>
       </div>
+      <div v-else>no songs</div>
       <div v-if="isOwner">
         <AddSong :playlist="playlist" />
       </div>
@@ -122,5 +126,13 @@ export default {
 }
 .description {
   text-align: left;
+}
+.single-song {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--secondary);
+  margin-bottom: 20px;
 }
 </style>

@@ -19,7 +19,9 @@
             <h3>{{ song.title }}</h3>
             <p>made by {{ song.artist }}</p>
           </div>
-          <button v-if="isOwner">delete song</button>
+          <button v-if="isOwner" @click="deleteSong(song.id)">
+            delete song
+          </button>
         </div>
       </div>
       <div v-else>no songs</div>
@@ -39,6 +41,7 @@ import { ref } from "@vue/reactivity";
 import getDocument from "../../composibles/getDocument";
 import useStorage from "../../composibles/useStorage";
 import { deleteDocument } from "../../composibles/document";
+import useDocument from "../../composibles/useDocument";
 import getUser from "../../composibles/getUser";
 import { computed } from "@vue/runtime-core";
 import { useRouter } from "vue-router";
@@ -55,6 +58,16 @@ export default {
     const { deleteImage } = useStorage();
     const showAddSong = ref(false);
     const song = ref(null);
+    const { updateDoc } = useDocument("playlists", props.id);
+
+    const deleteSong = async (id) => {
+      console.log("delete song: ", id);
+      const songs = playlist.value.songs.filter((song) => {
+        return song.id != id;
+      });
+      playlist.value.songs = songs;
+      await updateDoc({ songs: songs }); // need to pass an obj
+    };
 
     const handleAddSong = async () => {
       playlist.value.songs.push(song.value);
@@ -83,6 +96,7 @@ export default {
       handleDelete,
       showAddSong,
       handleAddSong,
+      deleteSong,
     };
   },
 };

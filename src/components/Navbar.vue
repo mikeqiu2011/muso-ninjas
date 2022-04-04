@@ -11,6 +11,7 @@
           <router-link :to="{ name: 'CreatePlaylist' }" class="btn"
             >Create playlist</router-link
           >
+          <span>Hi, {{ user.displayName }}</span>
           <button @click="handleLogout">Logout</button>
         </div>
         <div v-else>
@@ -71,5 +72,12 @@ nav .links a,
 button {
   margin-left: 16px;
   font-size: 14px;
+}
+span {
+  display: inline-block;
+  border-left: 1px solid #eee;
+  font-size: 14px;
+  margin-left: 14px;
+  padding-left: 14px;
 }
 </style>

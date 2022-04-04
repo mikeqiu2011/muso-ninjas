@@ -9,7 +9,7 @@ const deleteDocument = async (collection, id) => {
     isPending.value = true
     const documentRef = projectFirestore.collection(collection).doc(id)
     const res = await documentRef.delete()
-    isPending = false
+    isPending.value = false
 
     return res
   } catch (err) {

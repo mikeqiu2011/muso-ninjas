@@ -24,6 +24,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import getDocument from "../../composibles/getDocument";
+import useStorage from "../../composibles/useStorage";
 import deleteDocument from "../../composibles/deleteDocument";
 import getUser from "../../composibles/getUser";
 import { computed } from "@vue/runtime-core";
@@ -36,6 +37,7 @@ export default {
     const { error, document: playlist } = getDocument("playlists", props.id);
     const { user } = getUser();
     const router = useRouter();
+    const { deleteImage } = useStorage();
 
     const isOwner = computed(() => {
       console.log(user.value.uid, playlist.value.userId);
@@ -44,8 +46,10 @@ export default {
       );
     });
 
-    const handleDelete = () => {
-      deleteDocument("playlists", props.id);
+    const handleDelete = async () => {
+      await deleteImage(playlist.value.filePath); // first delete image then delete doc
+      await deleteDocument("playlists", props.id); // async function, we have to await
+
       router.push({ name: "Home" });
     };
 

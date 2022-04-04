@@ -15,7 +15,8 @@
     <div class="song-list">
       <p>song list here</p>
     </div>
-    <div v-if="isOwner">
+    <!-- <div v-if="isOwner"> test if a malicous user can delete record he not own-->
+    <div>
       <button @click="handleDelete">Delete playlist</button>
     </div>
   </div>

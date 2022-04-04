@@ -16,3 +16,9 @@
 
 ## create firestore index
     https://console.firebase.google.com/project/muso-ninjas-409e9/firestore/indexes
+
+## lock down api key refer
+    https://console.cloud.google.com/apis/credentials?project=muso-ninjas-409e9
+
+## build and deploy
+    npm run build && firebase deploy
